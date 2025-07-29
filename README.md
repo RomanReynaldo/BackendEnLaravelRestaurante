@@ -19,7 +19,7 @@
 
   * [Roman Mendoza Reynaldo] - [Rol: "Desarrollador Backend"]
 
-  * [Nombre Completo del Integrante 2] - [Rol: "Desarrollador Frontend"]
+  * Santiago Jimenez Abel] - [Rol: "Desarrollador Frontend"]
 
   
 
@@ -36,47 +36,66 @@
 
 [Aca se valida que exista el usuario y su rol para mostrar secciónes especificas y privilegios.]
 
-(Inserta aquí la URL de tu imagen del proceso de logueo)
+![Controladores para API Login](/images/controladores%20para%20api%20login.png)
+
 
 #### Niveles de Usuario | Rol
 
 [Detalla los diferentes roles de usuario y sus permisos, ej: "Administrador, Mesero, Comensal."]
 
-(Inserta aquí la URL de tu imagen de la interfaz de roles o descripción de permisos)
+![Rutas APIs para Frontend](/images/rutas%20APIs%20para%20frontEnd.png)
 
 #### CRUD de Usuarios
 
-[Describe cómo se gestionan los usuarios (crear, leer, actualizar, eliminar).]
+[Describe cómo se gestionan los usuarios  a través de permisos (crear, leer, actualizar, eliminar).]
 
-(Inserta aquí la URL de tu imagen del CRUD de usuarios)
+![de roles y permisos](/images/crudRoles.png)
 
 #### CRUD de Productos
 
 [Describe cómo se gestionan los productos (crear, leer, actualizar, eliminar).]
 
-(Inserta aquí la URL de tu imagen del CRUD de productos)
+![de roles y permisos](/images/crudProductos.png)
 
 #### Proceso Principal (Ejemplo: Venta de Productos)
 
 [ "El mesero toma un pedido desde la mesa, añade productos, y el pedido se envía a cocina. El admin tambien como el mesero puede ver el estado de  pedido y confirmar o cobrar. El admin es el unico que puede eliminar o desactivar usuarios o cancelar pedidos"]
 
-(Inserta aquí la URL de tu imagen del proceso principal)
+![de roles y permisos](/images/crudPedidosPDF.png)
 
 #### Envío de Correo Electrónico con PDF Adjunto
 
 [ "Se genera un ticket de pago en formato PDF utilizando la librería Dompdf") la librería que  se usa para el envío ("Para el envío de correos, se utiliza Laravel Mail con la configuración SMTP de Mailtrap/SendGrid").]
 
-(Inserta aquí la URL de tu imagen de un correo electrónico enviado con PDF)
+![Generación de PDF](/images/generacionde%20pdf.png)
 
-#### Otras Funcionalidades Únicas de su Proyecto
+![Ticket en Correo Adjunto](/images/ticket%20en%20correo%20adjunto.png)
+
+## Otras Funcionalidades Únicas del Proyecto
 
 * [Funcionalidad única 1, ej: "Gestión de Mesas en tiempo real.Si el usuario crea nuevo pedido puede seleccionar mesas y ver su estado actual si esta libre ocupada o no disponible"]
 
 * [Funcionalidad única 2, ej: El usuario invitado o publico general en este caso se llama comensal puede escanear QR para acceder al menu de productos y visualizar. Cada producto tienedescripcion breve con el fin de provocar apetito al usuario."]
 
 * ...
+### Restableciéndomelos password
+![Link al Correo para Restablecer Contraseña](/images/link%20al%20correo%20restet%20password.png)
 
-(Inserta aquí la URL de tu imagen de otras funcionalidades si aplica)
+### paquetes integrados
+![Paquetes Integrados](/images/PaquetesIntegrados.png)
+### vista de restablecer password
+![Vista de Link de Restablecimiento de Contraseña](/images/VistadeLinkRestePassword.png)
+### visualización de productos en sql
+![Productos en Base de Datos](/images/productos%20en%20bases%20de%20datos.png)
+### visualización de los tokens
+![Tokens Generados en la Base de Datos](/images/tokensGENRADOS%20EN%20LA%20BASE%20DEDATSO.png)
+### por si se necesita manualmente ver detalles de pedidos
+![Visualización de Detalles de Pedidos](/images/vISUALIZACION%20DE%20DETALLES%20PEDIDOS.png)
+### configuracion de datos iniciales
+![Configuración de .env para Datos Iniciales](/images/Config%20de%20env%20para%20datos%20iniciales%20y%20configuraciones%20del%20entorno.png)
+### Por protocolo se guardan tickest en el servidor también 
+![Tickets Guardados en el Servidor para Respaldo](/images/tickets%20guardado%20en%20servidor%20para%20respaldo.png)
+
 
 # 3. APIs Laravel y Consumo de las Mismas con Imágenes
 
@@ -157,8 +176,9 @@ body: JSON.stringify({ email: 'usuario@ejemplo.com', password: 'password' }),
 - **DELETE** `/mesas/{id}`: Elimina una mesa (requiere rol admin).
 
 
+## Ejem[lo de postman
+![de roles y permisos](/images/postman.png)
 
-![Inserta aquí la URL de tu imagen mostrando una herramienta como Postman, una captura de red del navegador, o un diagrama de la arquitectura API](URL_DE_LA_IMAGEN)
 
 ## 4. Dependencias y Configuración
 
