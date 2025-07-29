@@ -10,7 +10,7 @@
 # 1. "Sistema de Gestion de servicios de Restaurante)"
 
 
-* **Nombre del Proyecto:** [Tu nombre de proyecto aquí, ej: "Sistema de Gestión de Restaurante"]
+* **Nombre del Proyecto:** [ "Sistema de Gestión de Restaurante"]
 
 * **Número de Equipo:** [ "Equipo 14"]
 
@@ -18,7 +18,7 @@
 
   * [Roman Mendoza Reynaldo] - [Rol: "Desarrollador Backend"]
 
-  * Santiago Jimenez Abel] - [Rol: "Desarrollador Frontend"]
+  * [Santiago Jimenez Abel] - [Rol: "Desarrollador Frontend"]
 
   
 
