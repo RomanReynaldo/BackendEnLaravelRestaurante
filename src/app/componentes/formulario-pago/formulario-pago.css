@@ -1,0 +1,51 @@
+.banner-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("/assets/imagenes/restauranteBackground.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Capa de oscurecimiento opcional para mejorar contraste del contenido */
+.banner-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Oscurecimiento */
+  z-index: 1;
+}
+
+/* Contenido dentro del banner */
+.banner-container > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Ajustes responsivos adicionales */
+@media (max-width: 768px) {
+  .banner-container {
+    padding: 1rem;
+    background-position: top center;
+  }
+}
+
+h2{
+    color:white;
+    font-size: 400%;
+}
+
+h5{
+    color:beige;
+}

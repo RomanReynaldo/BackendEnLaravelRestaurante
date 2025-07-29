@@ -1,0 +1,105 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!--Barra de navegacion-->
+
+<app-barra-navegacion></app-barra-navegacion>
+
+<!--Tabla-->
+<section class="bienvenida-container">
+    <div class="banner-container">
+  <!--Tabla de datos del menu-->
+      
+  <!--Buscado de menu-->
+        <h1>Tasca Don Quino</h1>
+        <h2>Pedidos</h2>
+        <!-- Resumen del Pedido (solo mitad del ancho) -->
+<!-- Contenedor centrado y separado -->
+<div class="d-flex justify-content-center mb-3">
+  <div class="accordion w-50 mx-auto">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" (click)="mostrarResumen = !mostrarResumen">
+          Resumen del Pedido
+        </button>
+      </h2>
+      <div class="accordion-collapse collapse show" *ngIf="mostrarResumen">
+        <div class="accordion-body">
+          <ul>
+            <li *ngFor="let p of pedidos">{{ p.nombre }} x{{ p.cantidad }}</li>
+          </ul>
+          <p><strong>Total:</strong> ${{ obtenerTotal() }}</p>
+          <button class="btn btn-sm btn-success me-2" (click)="enviarPedido()">Enviar a cocina</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <div class="mb-4 d-flex justify-content-center">
+          
+            <input type="text" class="form-control w-50" placeholder="Buscar platillo por nombre"
+            [(ngModel)]="terminoBusqueda" (input)="filtrarPlatillos()">
+          
+          <button class="btn btn-primary" (click)="mostrarResumen = !mostrarResumen">
+          Visualizar Pedido
+</button>            
+        </div>
+        <div class="mb-3">
+  <label for="mesa" style="color:white;">Número de Mesa:</label>
+  <select id="mesa" [(ngModel)]="numeroMesa" class="form-control">
+    <option value="" disabled selected>Seleccione una mesa</option>
+    <option *ngFor="let mesa of mesas" [value]="mesa.id">
+      {{ mesa.id }} {{mesa.estado}}
+    </option>
+  </select>
+</div>
+    <div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio ind.</th>
+                <th>Cantidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let platillo of platillosFiltrados; let i = index">
+                <td>{{ platillo.id }}</td>
+    
+                <!-- Nombre -->
+                <td>
+                    <input *ngIf="platillo.editando" [(ngModel)]="platillo.nombre" class="form-control"/>
+                    <span *ngIf="!platillo.editando">{{ platillo.nombre }}</span>
+                </td>
+    
+                <!-- Descripción -->
+                <td>
+                    <input *ngIf="platillo.editando" [(ngModel)]="platillo.descripcion" class="form-control"/>
+                    <span *ngIf="!platillo.editando">{{ platillo.descripcion }}</span>
+                </td>
+    
+                <!-- Precio -->
+                <td>
+                    <input *ngIf="platillo.editando" [(ngModel)]="platillo.precio" class="form-control"/>
+                    <span *ngIf="!platillo.editando">{{ platillo.precio }}</span>
+                </td>
+                <td>
+                    <input type="number" placeholder="0" class="form-control" [(ngModel)]="platillo.cantidad" min="1">
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-success me-2" (click)="agregarPlatillo(platillo.id)">Guardar</button>
+                    <button class="btn btn-sm btn-danger" (click)="eliminarPlatillo(platillo.id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>  
