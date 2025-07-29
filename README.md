@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# 1. "Sistema de Gestion de servicios de Restaurante)
+# 1. "Sistema de Gestion de servicios de Restaurante)"
 
 
 * **Nombre del Proyecto:** [Tu nombre de proyecto aquí, ej: "Sistema de Gestión de Restaurante"]
