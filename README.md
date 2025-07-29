@@ -7,9 +7,8 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# Nombre del Proyecto: "Sistema de Gestion de servicios de Restaurante)
+# 1. "Sistema de Gestion de servicios de Restaurante)
 
-### 1. Encabezado
 
 * **Nombre del Proyecto:** [Tu nombre de proyecto aquí, ej: "Sistema de Gestión de Restaurante"]
 
@@ -180,7 +179,7 @@ body: JSON.stringify({ email: 'usuario@ejemplo.com', password: 'password' }),
 ![de roles y permisos](/images/postman.png)
 
 
-## 4. Dependencias y Configuración
+# 4. Dependencias y Configuración
 
 ### Requisitos Mínimos para Poner en Marcha el Proyecto
 
