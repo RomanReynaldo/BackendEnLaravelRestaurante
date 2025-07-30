@@ -48,7 +48,7 @@ class ForgotPasswordController extends Controller
             // debe coincidir directamente con el almacenado. http://127.0.0.1:8000/reset-password/Ih3yvgsi/abel%40ejemplo.com
             DB::table('password_reset_tokens')->insert([
                 'email' => $request->email,
-                'token' => $token, // Aquí NO se usa Hash::make($token)
+                'token' => Hash::make($token), // Aquí NO se usa 
                 'created_at' => Carbon::now(),
             ]);
 
