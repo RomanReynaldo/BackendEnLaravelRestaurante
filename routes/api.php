@@ -18,7 +18,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Rutas para la recuperación de contraseña (¡AÑADIDAS AQUÍ!)
 // Ruta para solicitar el enlace de restablecimiento (el frontend envía solo el email)
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
 
 // Ruta para que el frontend valide el token antes de mostrar el formulario de nueva contraseña
 // El frontend hará un GET a esta URL (con el token y email de la URL del correo)
@@ -34,9 +34,7 @@ Route::get('/api/saludo', function () {
 });
 
 // Rutas públicas de productos (accesibles sin autenticación)
-
-
-
+Route::get('/API/productos', [ProductoController::class, 'index']);
 
 // GRUPO DE RUTAS QUE REQUIEREN AUTENTICACIÓN (auth:sanctum)
 Route::middleware(['auth:sanctum'])->group(function () {

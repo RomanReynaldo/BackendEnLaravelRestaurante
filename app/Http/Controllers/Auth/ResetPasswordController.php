@@ -35,7 +35,7 @@ class ResetPasswordController extends Controller
             // Validate the request inputs
             $request->validate([
                 'email'    => 'required|email|exists:users,email',
-                'password' => 'required|string|min:6|confirmed',
+                'password' => 'required|string|min:8|confirmed',
                 'token'    => 'required',
             ]);
 
@@ -64,14 +64,25 @@ class ResetPasswordController extends Controller
                 // Delete the used password reset record
                 DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-                return redirect('/login')->with('success', 'Your password has been changed successfully!');
             }
 
-            return back()->with('error', 'User not found!')->withInput();
+            // Devuelve una respuesta JSON con el mensaje de éxito.
+                return response()->json([
+                'status' => 'success',
+                'message' => '¡Le hemos actualizado su contraseña!  Por favor, innicie sesion.'
+                ], 200); // Código de estado HTTP 200 (OK)
 
-        } catch (\Exception $e) {
-            Log::error('Error updating password: ' . $e->getMessage());
-            return back()->with('error', 'Something went wrong while updating your password. Please try again later.');
+
+            } catch (\Exception $e) {
+                Log::error('Error updating password: ' . $e->getMessage()); // Indentación corregida
+                // Devuelve una respuesta JSON con un mensaje de error.
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error de restablecimiento. Por favor, inténtelo de nuevo.'
+                ], 500); // Aquí faltaba un paréntesis de cierre y el código de estado era incorrecto.
+            }
         }
-    }
 }
+
+
+

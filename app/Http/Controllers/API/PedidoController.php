@@ -148,43 +148,58 @@ class PedidoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Carga las relaciones necesarias para el ticket y el pedido.
-        $pedido = Pedido::with('user', 'mesa', 'productos')->find($id);
+        $pedido = Pedido::find($id);
+        Log::info("encontrado pedido con ID: {$id}");
 
         if (!$pedido) {
             return response()->json(['message' => 'Pedido no encontrado.'], 404);
         }
-
-        $old_status = $pedido->estado; // Guarda el estado anterior
-
-        // Valida los campos, incluyendo los nuevos para el envío del ticket
+    
+        $old_status = $pedido->estado;
+    
         $validated = $request->validate([
             'estado' => 'sometimes|required|in:pendiente,entregado,cancelado,pagado',
-            // Opciones de envío de ticket: 'email', 'descargar', 'ninguno'
             'metodo_envio_ticket' => 'nullable|string|in:email,descargar,ninguno',
-            'cliente_email' => 'nullable|email|max:255|required_if:metodo_envio_ticket,email', // Requerido solo si el método es email
+            'cliente_email' => 'nullable|email|max:255|required_if:metodo_envio_ticket,email',
         ]);
+        Log::info("validado pedido con ID: {$id}", ['validated_data' => $validated]);
 
         $pedido->update($validated);
-
-        // --- LÓGICA PARA GESTIONAR EL TICKET SI EL ESTADO CAMBIA A 'pagado' ---
-        if ($pedido->estado === 'pagado' && $old_status !== 'pagado') {// Verifica si el estado cambió a 'pagado' o si ya estaba 'pagado'
-            $metodoEnvio = $request->input('metodo_envio_ticket', 'ninguno'); // Valor predeterminado 'ninguno'
-
+    
+        if ($pedido->estado === 'pagado' && $old_status !== 'pagado') {
+            $pedido->loadMissing('user', 'mesa', 'productos');
+    
+            $pdf = Pdf::loadView('emails.tickets.pago', ['pedido' => $pedido]);
+            $filename = 'ticket_pedido_' . $pedido->id . '.pdf';
+            $path_in_disk = 'tickets/' . $filename;
+    
+            try {
+                Storage::disk('public')->put($path_in_disk, $pdf->output());
+                Log::info("Ticket PDF guardado en disco para Pedido ID: {$pedido->id}, ruta: {$path_in_disk}");
+            } catch (\Exception $e) {
+                Log::error("Error al guardar ticket PDF en disco para Pedido ID: {$pedido->id}: " . $e->getMessage());
+                return response()->json([
+                    'message' => 'Pedido actualizado a "pagado", pero hubo un error al guardar el ticket.',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+    
+            $metodoEnvio = $request->input('metodo_envio_ticket', 'ninguno');
+    
             switch ($metodoEnvio) {
                 case 'email':
                     $clienteEmail = $request->input('cliente_email') ?? $pedido->user->email ?? null;
-
+    
                     if ($clienteEmail) {
                         try {
                             Mail::to($clienteEmail)->send(new TicketPagoMail($pedido));
-                            Log::info('Ticket de pago enviado por correo para el Pedido ID: ' . $pedido->id . ' al email: ' . $clienteEmail);
+                            Log::info('Ticket enviado por correo para Pedido ID: ' . $pedido->id . ' al email: ' . $clienteEmail);
                             return response()->json([
                                 'message' => 'Pedido actualizado a "pagado" y ticket enviado por correo.',
                                 'pedido' => $pedido->load('productos')
                             ], 200);
                         } catch (\Exception $e) {
-                            Log::error('Error al enviar ticket por correo para el Pedido ID: ' . $pedido->id . ': ' . $e->getMessage());
+                            Log::error('Error al enviar ticket por correo para Pedido ID: ' . $pedido->id . ': ' . $e->getMessage());
                             return response()->json([
                                 'message' => 'Pedido actualizado a "pagado", pero hubo un error al enviar el ticket por correo.',
                                 'error' => $e->getMessage(),
@@ -192,69 +207,34 @@ class PedidoController extends Controller
                             ], 500);
                         }
                     } else {
-                        Log::warning('No se pudo enviar ticket por correo: Email del cliente no disponible para Pedido ID: ' . $pedido->id);
+                        Log::warning('No se proporcionó un email válido para Pedido ID: ' . $pedido->id);
                         return response()->json([
-                            'message' => 'Pedido actualizado a "pagado", pero no se pudo enviar el ticket por correo porque no se proporcionó un email.',
+                            'message' => 'Pedido actualizado a "pagado", pero no se proporcionó un email válido.',
                             'pedido' => $pedido->load('productos')
-                        ], 400); // Bad Request
+                        ], 400);
                     }
-                    break;
-
-                    case 'descargar':
-                        try {
-                            $pedido->loadMissing('user', 'mesa', 'productos');
-                            $pdf = Pdf::loadView('emails.tickets.pago', ['pedido' => $pedido]);
-                            $filename = 'ticket_pedido_' . $pedido->id . '.pdf';
-                            $path_in_disk = 'tickets/' . $filename; // Esta es la ruta RELATIVA dentro del disco que usaremos
-                    
-                            Log::debug("Intento de guardar PDF para Pedido ID: {$pedido->id}");
-                            Log::debug("Ruta de archivo para guardar: {$path_in_disk}");
-                            Log::debug("Tamaño del contenido del PDF (bytes): " . strlen($pdf->output())); // Verifica si hay contenido
-                    
-                            // --- INICIO DE LA LÓGICA PARA GUARDAR EL PDF ---
-                            // ¡¡¡CORRECCIÓN CLAVE AQUÍ: Usa Storage::disk('public')->put() !!!
-                            Storage::disk('public')->put($path_in_disk, $pdf->output()); 
-                            Log::info("PDF guardado con éxito en: {$path_in_disk} (en disco 'public/storage/tickets/') para Pedido ID: {$pedido->id}");
-                    
-                            // Opcional: Si quieres guardar la ruta en la DB y que sea una URL pública, descomenta y corrige.
-                            // Ahora sí podemos usar $path_in_disk aquí si la descomentas.
-                            // $pedido->ruta_pdf_ticket = Storage::url($path_in_disk); // Genera una URL pública si el disco es público
-                            // $pedido->save();
-                            // --- FIN DE LA LÓGICA PARA GUARDAR EL PDF ---
-                    
-                            // Devolvemos el PDF directamente como una respuesta de descarga.
-                            // Tu frontend debe estar preparado para manejar una respuesta binaria (application/pdf)
-                            return response()->streamDownload(function () use ($pdf) {
-                                echo $pdf->output();
-                            }, $filename, [
-                                'Content-Type' => 'application/pdf',
-                                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-                            ]);
-                    
-                        } catch (\Exception $e) {
-                            // En tu log de error y mensaje JSON, asegúrate de que no haya ninguna referencia a `$path` sino solo a `$e->getMessage()`.
-                            Log::error('Error al generar o guardar PDF para descarga del Pedido ID: ' . $pedido->id . ': ' . $e->getMessage());
-                            return response()->json([
-                                'message' => 'Pedido actualizado a "pagado", pero hubo un error al generar o guardar el PDF para descarga.',
-                                'error' => $e->getMessage(), // Esta es la variable que capturará el mensaje de error de la excepción.
-                                'pedido' => $pedido->load('productos')
-                            ], 500);
-                        }
-                        break;
-
+    
+                case 'descargar':
+                    return response()->streamDownload(function () use ($pdf) {
+                        echo $pdf->output();
+                    }, $filename, [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                    ]);
+    
                 case 'ninguno':
                 default:
-                    // Si no se especifica un método o es 'ninguno', simplemente actualiza y no envía ticket.
-                    Log::info('Pedido ID: ' . $pedido->id . ' actualizado a "pagado". No se solicitó envío de ticket.');
+                    Log::info('Pedido pagado sin envío de ticket. Ticket fue guardado en disco.');
                     break;
             }
         }
-
-        // Si el estado no cambió a pagado, o si se manejó el envío de ticket y se devolvió una respuesta específica.
-        // Si el método de envío fue 'email' o 'descargar', ya se habrá retornado una respuesta.
-        // Solo llegamos aquí si el estado no cambió a 'pagado' o si el método fue 'ninguno'.
-        return response()->json(['message' => 'Pedido actualizado con éxito', 'pedido' => $pedido->load('productos')]);
+    
+        return response()->json([
+            'message' => 'Pedido actualizado con éxito',
+            'pedido' => $pedido->load('productos')
+        ]);
     }
+    
 
     
     /**
