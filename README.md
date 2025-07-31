@@ -1,5 +1,5 @@
 
-# 1. "Sistema de Gestion de servicios de Restaurante: Frontned"
+# 1. Sistema de Gestion de servicios de Restaurante: Frontned
 
 
 * **Nombre del Proyecto:** [Sistema de Gestión de Restaurante]
@@ -118,6 +118,18 @@ crearPlatillo() hace una llamada al api cuando se hace clic en crear platillo, d
 #### Proceso Principal 
 
 [ "El mesero toma un pedido desde la mesa, añade productos, y el pedido se envía a cocina. El admin tambien como el mesero puede ver el estado de  pedido y confirmar o cobrar. El admin es el unico que puede eliminar o desactivar usuarios o cancelar pedidos"]
+
+# 4. Dependencias y configuraciones.
+
+Para realizar el proyecto frontend, empleamos angular y bibliotecas como bootstrap 5.
+<img width="1707" height="960" alt="7da461bb-34d8-4fa8-8bb2-138f6f7034d8-cover-879652240" src="https://github.com/user-attachments/assets/04c42701-ce33-4463-a015-6b8fa21e1948" />
+
+Bootstrap es un framework CSS de código abierto que facilita el desarrollo de sitios web responsivos y adaptables a dispositivos móviles. Creado por Twitter, Bootstrap proporciona una colección de componentes, estilos y utilidades que aceleran el desarrollo web.
+
+![AngularJS-Overview-1414167808](https://github.com/user-attachments/assets/ee5b314b-e5b3-4a1c-ae41-d4aa9769bc7b)
+Angular es un framework de diseño de aplicaciones y plataforma de desarrollo para crear aplicaciones de una sola página eficientes y sofisticadas
+
+Esta documentación de Angular te ayuda a aprender y usar el framework y la plataforma de desarrollo, desde tu primera aplicación hasta la optimización de aplicaciones complejas de una sola página, para empresas. Los tutoriales y guías incluyen ejemplos descargables para acelerar tus proyectos.
 
 
 
