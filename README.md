@@ -245,6 +245,21 @@ npm run dev
 yarn dev
 ```
 
+# 5. Funcionalidades únicas del proyecto
+
+###Este proyecto cuenta con varias integraciones y herramientas que optimizan su rendimiento y funcionalidad:
+
+- **Heroku Dynos**: El proyecto se ejecuta en **Dynos de Heroku**, lo que permite una implementación sencilla y escalable en la nube.
+- **Base de datos en Heroku**: Utiliza una base de datos PostgreSQL proporcionada por Heroku, lo que garantiza estabilidad y fácil administración.
+- **Servidor en Heroku**: Todo el backend del proyecto está desplegado en Heroku, facilitando el despliegue continuo y la integración con otras herramientas del ecosistema.
+
+  ![Heroku](/images/heroku.png)
+
+- **Envío de correos con Mailtrap**: Se implementa el envío de correos electrónicos de forma segura en entornos de desarrollo usando **Mailtrap**, ideal para pruebas sin enviar correos reales.
+  ![Mailtrap](/images/mailtrap.png)
+- **Almacenamiento de archivos en Cloudinary**: Las imágenes y archivos multimedia se almacenan de forma externa en **Cloudinary**, lo que mejora la carga del servidor y facilita el manejo de archivos.
+  ![Cloudinary](/images/cloudy.png)
+
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
 ## Learning Laravel
