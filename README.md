@@ -247,7 +247,7 @@ yarn dev
 
 # 5. Funcionalidades únicas del proyecto
 
-###Este proyecto cuenta con varias integraciones y herramientas que optimizan su rendimiento y funcionalidad:
+### Este proyecto cuenta con varias integraciones y herramientas que optimizan su rendimiento y funcionalidad:
 
 - **Heroku Dynos**: El proyecto se ejecuta en **Dynos de Heroku**, lo que permite una implementación sencilla y escalable en la nube.
 - **Base de datos en Heroku**: Utiliza una base de datos PostgreSQL proporcionada por Heroku, lo que garantiza estabilidad y fácil administración.
